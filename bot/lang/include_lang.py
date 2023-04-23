@@ -5,3 +5,5 @@ lang = {
     "ru" : ru,
     "eng" : eng,
 }
+
+lang_handl = ["ru", "eng"]

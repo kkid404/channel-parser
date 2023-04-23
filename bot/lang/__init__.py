@@ -1,1 +1,1 @@
-from lang.include_lang import lang
+from lang.include_lang import lang, lang_handl

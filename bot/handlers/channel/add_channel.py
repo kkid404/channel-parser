@@ -1,20 +1,17 @@
-import re
-
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from aiogram.utils import exceptions
 
 from loader import bot, dp
 from keyboards import KeyboardClient
 from models import User
-from lang import lang
+from lang import lang, lang_handl
 from states import ChannelStorage
 from data import ChannelService
 
-handlers = [
-    lang["ru"]["keyboards"]["start"][0], 
-    lang["eng"]["keyboards"]["start"][0],
-]
+handlers = []
+
+for language in lang_handl:
+    handlers.append(lang[language]["keyboards"]["channel"][0])
 
 @dp.message_handler(text=handlers)
 async def add_channel_set(message: types.Message, kb = KeyboardClient()):
@@ -38,6 +35,6 @@ async def add_channel(message: types.Message, state: FSMContext, kb = KeyboardCl
     await state.finish()
     await bot.send_message(
         user.id,
-        lang[user.lang]["messages"]["channel_save"],
+        lang[user.lang]["messages"]["save"],
         reply_markup=kb.start(user.lang)
     )

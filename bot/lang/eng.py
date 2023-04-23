@@ -8,11 +8,15 @@ eng = {
         "about new events in the world of cryptocurrencies and blockchain.\n"
         "Thank you for choosing us!",
         "add_channel" : "Send link to channel:",
+        "add_project" : "Send project name",
         "channel_save" : "Channel saved!",
+        "channel" : "Choose what you want to do",
     },
     "keyboards" : 
     {
-    "start" : ["Add a channel", "Add a project"],
-    "back" : ["Back"],
+        "start" : ["Сhannel", "Project"],
+        "channel" : ["Add Channel", "Remove Channel"],
+        "project" : ["Add project", "Delete project"],
+        "back" : ["Back"],
     },
 }
