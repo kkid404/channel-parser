@@ -30,11 +30,17 @@ async def add_channel(message: types.Message, state: FSMContext, kb = KeyboardCl
     user = User(message.from_user.id, message.from_user.username, message.from_user.language_code)
     async with state.proxy() as data:
         data["channel"] = message.text  
-    if ChannelService.get_link(data["channel"]) == False:
+    if not ChannelService.get_link(data["channel"]):
         ChannelService.add(data["channel"])
+        await bot.send_message(
+            user.id,
+            lang[user.lang]["messages"]["save"],
+            reply_markup=kb.start(user.lang)
+        )
+    else:
+        await bot.send_message(
+            user.id,
+            lang[user.lang]["messages"]["include_channel"],
+            reply_markup=kb.start(user.lang)
+        )        
     await state.finish()
-    await bot.send_message(
-        user.id,
-        lang[user.lang]["messages"]["save"],
-        reply_markup=kb.start(user.lang)
-    )

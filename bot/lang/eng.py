@@ -11,6 +11,7 @@ eng = {
         "add_project" : "Send project name",
         "channel_save" : "Channel saved!",
         "channel" : "Choose what you want to do",
+        "include_channel" : "Channel successfully connected!",
     },
     "keyboards" : 
     {
