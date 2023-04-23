@@ -4,3 +4,6 @@ class KeyboardClient(Keyboard):
 
     def start(self, user_lang):
         return self._keyboard(user_lang, "start")
+
+    def back(self, user_lang):
+        return self._keyboard(user_lang, "back")
