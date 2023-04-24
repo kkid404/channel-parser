@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 
 from data.data import session, Base, SessionLocal
 
@@ -11,6 +12,8 @@ class User(Base):
     name = Column(String(125))
     chat_id = Column(String(125), unique=True)
 
+    channels = relationship("ChannelUser", back_populates="user")
+
 class UserService:
 
     @staticmethod
@@ -18,11 +21,12 @@ class UserService:
         user = User(name=name, chat_id=chat_id)
         session.add(user)
         session.commit()
+        return user.id
 
     @staticmethod
     def get(chat_id):
         user = db.query(User).filter_by(chat_id=chat_id).first()
         if user:
-            return user
+            return user.id
         else:
             False

@@ -6,7 +6,7 @@ from keyboards import KeyboardClient
 from models import User
 from lang import lang, lang_handl
 from states import ChannelStorage
-from data import ChannelService
+from data import ChannelService, UserService, ChannelUserService
 
 handlers = []
 
@@ -29,9 +29,11 @@ async def add_channel_set(message: types.Message, kb = KeyboardClient()):
 async def add_channel(message: types.Message, state: FSMContext, kb = KeyboardClient()):
     user = User(message.from_user.id, message.from_user.username, message.from_user.language_code)
     async with state.proxy() as data:
-        data["channel"] = message.text  
-    if not ChannelService.get_link(data["channel"]):
-        ChannelService.add(data["channel"])
+        data["channel"] = message.text
+    channel_id = ChannelService.get_link(data["channel"])
+    user_id = UserService.get(user.id)
+    if not channel_id:
+        channel_id = ChannelService.add(data["channel"])
         await bot.send_message(
             user.id,
             lang[user.lang]["messages"]["save"],
@@ -42,5 +44,6 @@ async def add_channel(message: types.Message, state: FSMContext, kb = KeyboardCl
             user.id,
             lang[user.lang]["messages"]["include_channel"],
             reply_markup=kb.start(user.lang)
-        )        
+        )
+    ChannelUserService.add(channel_id, user_id)
     await state.finish()
