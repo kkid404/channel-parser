@@ -15,5 +15,6 @@ async def start(message: types.Message, kb = KeyboardClient()):
         lang[user.lang]["messages"]["start"],
         reply_markup=kb.start(user.lang)
         )
-    if UserService.get(user.id) == False:
-        UserService.add(user.username, user.id)
+    user_id = UserService.get(user.id)
+    if user_id == None:
+        user_id = UserService.add(user.username, user.id)

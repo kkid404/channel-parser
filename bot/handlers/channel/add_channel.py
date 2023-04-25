@@ -1,3 +1,5 @@
+import re
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
@@ -28,22 +30,26 @@ async def add_channel_set(message: types.Message, kb = KeyboardClient()):
 @dp.message_handler(state=ChannelStorage.channel)
 async def add_channel(message: types.Message, state: FSMContext, kb = KeyboardClient()):
     user = User(message.from_user.id, message.from_user.username, message.from_user.language_code)
-    async with state.proxy() as data:
-        data["channel"] = message.text
-    channel_id = ChannelService.get_link(data["channel"])
-    user_id = UserService.get(user.id)
-    if not channel_id:
-        channel_id = ChannelService.add(data["channel"])
-        await bot.send_message(
-            user.id,
-            lang[user.lang]["messages"]["save"],
-            reply_markup=kb.start(user.lang)
-        )
-    else:
-        await bot.send_message(
-            user.id,
-            lang[user.lang]["messages"]["include_channel"],
-            reply_markup=kb.start(user.lang)
-        )
-    ChannelUserService.add(channel_id, user_id)
-    await state.finish()
+    pattern = re.compile(r'https://t.me/(.+)')
+    match = pattern.match(message.text)
+    if match:
+        async with state.proxy() as data:
+            data["channel"] = message.text
+        channel_id = ChannelService.get_link(data["channel"])
+        user_id = UserService.get(str(user.id))
+        if not channel_id:
+            channel_id = ChannelService.add(data["channel"])
+            await bot.send_message(
+                user.id,
+                lang[user.lang]["messages"]["save"],
+                reply_markup=kb.start(user.lang)
+            )
+        else:
+            await bot.send_message(
+                user.id,
+                lang[user.lang]["messages"]["include_channel"],
+                reply_markup=kb.start(user.lang)
+            )
+        ChannelUserService.add(channel_id, user_id)
+        await state.finish()
+    

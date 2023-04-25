@@ -18,15 +18,14 @@ class UserService:
 
     @staticmethod
     def add(name, chat_id):
-        user = User(name=name, chat_id=chat_id)
+        user = User(name=str(name), chat_id=str(chat_id))
         session.add(user)
         session.commit()
         return user.id
 
     @staticmethod
     def get(chat_id):
-        user = db.query(User).filter_by(chat_id=chat_id).first()
+        user =  session.query(User).filter(User.chat_id == str(chat_id)).first()
         if user:
             return user.id
-        else:
-            False
+

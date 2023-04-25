@@ -8,7 +8,7 @@ class ChannelUser(Base):
     __tablename__ = "channels_users"
 
     channel_id = Column(Integer, ForeignKey("channels.id"), primary_key=True)
-    user_ud = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), primary_key=True)
     
     channel = relationship("Channel", back_populates="users")
     user = relationship("User", back_populates="channels")
