@@ -10,8 +10,9 @@ async def main():
         await client.connect()
     channel_parser = ChannelParser()
     async with client:
-        loop = asyncio.get_event_loop() # получаем текущий цикл событий
-        await loop.create_task(channel_parser.set_name()) # запускаем задачу в этом цикле
+        while True:
+            loop = asyncio.get_event_loop() # получаем текущий цикл событий
+            await loop.create_task(channel_parser.set_name()) # запускаем задачу в этом цикле
 
 
 if __name__ == "__main__":

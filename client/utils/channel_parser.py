@@ -1,7 +1,10 @@
-from data import ChannelService
-import re
-from loader import client
+from typing import Union
+
 from telethon import errors
+
+from data import ChannelService
+from loader import client
+
 
 class ChannelParser:
     """
@@ -19,7 +22,7 @@ class ChannelParser:
         Set the name of all channels returned by ChannelService.get_all_channels().
     """
     
-    async def _get_channel_id(self, channel: str)->str|None:
+    async def _get_channel_id(self, channel: str)->Union[str, None]:
         """
         Get the ID of the given Telegram channel.
 
@@ -36,12 +39,13 @@ class ChannelParser:
         try:
             entity = await client.get_entity(channel)
             channel_id = entity.id
+            ChannelService.update_channel_id(channel, channel_id)
             return channel_id
         except errors.ChannelInvalidError:
             print('Channel not found')
             return None
 
-    async def _get_channel_name(self, channel: str)->str|None:
+    async def _get_channel_name(self, channel: str)->Union[str, None]:
         """
         Get the name of the given Telegram channel.
 

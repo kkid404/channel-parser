@@ -45,3 +45,9 @@ class ChannelService:
         print(channel)
         channel.name = name
         session.commit()
+
+    @staticmethod
+    def update_channel_id(link, channel_id):
+        channel = session.query(Channel).filter(Channel.link == link).first()
+        channel.channel_id = channel_id
+        session.commit()
