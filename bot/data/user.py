@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from data.data import session, Base, SessionLocal
+from data.project_user import ProjectUser
+
 
 db = SessionLocal()
 
@@ -13,6 +15,7 @@ class User(Base):
     chat_id = Column(String(125), unique=True)
 
     channels = relationship("ChannelUser", back_populates="user")
+    projects = relationship("ProjectUser", back_populates="user")
 
 class UserService:
 

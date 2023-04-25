@@ -6,7 +6,7 @@ from keyboards import KeyboardClient
 from models import User
 from lang import lang, lang_handl
 from states import ProjectStorage
-from data import ProjectService
+from data import ProjectService, ProjectUserService, UserService
 
 handlers = []
 
@@ -30,8 +30,11 @@ async def add_project(message: types.Message, state: FSMContext, kb = KeyboardCl
     user = User(message.from_user.id, message.from_user.username, message.from_user.language_code)
     async with state.proxy() as data:
         data["project"] = message.text  
-    if ProjectService.get_name(data["project"]) == False:
-        ProjectService.add(data["project"])
+    project_id = ProjectService.get_id(data["project"])
+    user_id = UserService.get(str(user.id))
+    if not project_id:
+        project_id= ProjectService.add(data["project"])
+    ProjectUserService.add(project_id, user_id)
     await state.finish()
     await bot.send_message(
         user.id,

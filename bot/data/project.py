@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 
 from data.data import session, Base, SessionLocal
+from sqlalchemy.orm import relationship
 
 db = SessionLocal()
 
@@ -10,18 +11,21 @@ class Project(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), default=None)
 
+    users = relationship("ProjectUser", back_populates="project")
+
 class ProjectService:
 
     @staticmethod
     def add(name):
-        channel = Project(name=name)
-        session.add(channel)
+        project = Project(name=name)
+        session.add(project)
         session.commit()
+        return project.id
 
     @staticmethod
-    def get_name(name):
-        channel = db.query(Project).filter_by(name=name).first()
-        if channel:
-            return channel
+    def get_id(name):
+        project =  db.query(Project).filter(name == name).first()
+        if project:
+            return project.id
         else:
-            False
+            None
