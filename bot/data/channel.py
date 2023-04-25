@@ -42,14 +42,14 @@ class ChannelService:
     @staticmethod
     def get_link(link: str) -> Union[int, None]:
         """
-        The get_link method takes a reference to a channel and uses the filter_by 
+        The get_link method takes a reference to a channel and uses the filter 
         method of db.query(Channel) object to search for the channel by the passed reference. 
 
         Returns
         -------
         int
             If the channel is found, the method returns its identifier. 
-        False
+        None
             If the channel is not found
         """
         channel = session.query(Channel).filter(Channel.link == link).first()

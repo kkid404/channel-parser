@@ -5,12 +5,12 @@ from lang import lang
 class Keyboard:
     def _keyboard(self, user_lang: str, name: str, row_width: int = 2) -> Union[ReplyKeyboardMarkup, InlineKeyboardMarkup]:
         """
-        Создает клавиатуру из списка строк или словаря.
+        Creates a keyboard from a list of strings or a dictionary.
         Args:
-            btns (Union[list, dict]): Список строк или словарь вида {код: название кнопки}.
-            row_width (int): Количество кнопок в строке.
+            btns (Union[list, dict]): A list of strings or a dictionary of the form {code: button name}.
+            row_width (int): The number of buttons in a row.
         Returns:
-            Union[ReplyKeyboardMarkup, InlineKeyboardMarkup]: Созданная клавиатура.
+            Union[ReplyKeyboardMarkup, InlineKeyboardMarkup]: The keyboard created.
         """
         btns = lang[user_lang]["keyboards"][name]
         if isinstance(btns, list):
