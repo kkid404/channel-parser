@@ -48,6 +48,6 @@ class ProjectService:
         None
             If the project is not found
         """
-        project =  db.query(Project).filter(name == name).first()
+        project =  session.query(Project).filter(Project.name == name).first()
         if project:
             return project.id
